@@ -18,7 +18,7 @@ const valuesOfPropertiesByMty = {
       if (arr.indexOf(arr[i]) === i) {
         uniqueValuesCount[arr[i]] = 1;
       } else {
-        uniqueValuesCount[arr[i]] = ++uniqueValuesCount[arr[i]];
+        ++uniqueValuesCount[arr[i]];
       }
     };
     return uniqueValuesCount;
