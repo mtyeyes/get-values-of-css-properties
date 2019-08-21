@@ -1,2 +1,2 @@
-# Get values of css properties
-This script goes through every DOM element and return property values that specified in valuesOfPropertiesByMty.propertiesToSearch array. To get the answer type valuesOfPropertiesByMty\["property name"\](i.e. "color")
+### Get values of CSS properties
+This script goes through every DOM element and returns the values of CSS properties being used and counts how many times they are being used. Execute this script in the developer console and then read the **valuesOfProperties** object. To specify which properties to look for change the parameter of a self-invoking function.

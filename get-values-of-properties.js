@@ -1,18 +1,18 @@
-const valuesOfPropertiesByMty = {
-  propertiesToSearch : ['font-size','color', 'font-family'],
-  listOfElements : document.querySelectorAll('*'),
-  getComputedStyles(list) {
+let valuesOfProperties = ( function(propertiesToSearch) {
+  getComputedStyles = (arr) => {
     let computedStyles = [];
-    for (let element of list) {
+    for (let element of arr) {
       computedStyles.push(window.getComputedStyle(element));
     }
     return computedStyles;
-  },
-  removeWhiteSpaces(arr) {
+  };
+
+  removeWhiteSpaces = (arr) => {
     let arrWithoutSpaces = arr.filter(Boolean);
     return arrWithoutSpaces;
-  },
-  findAndCountUniqueValues(arr) {
+  };
+
+  findAndCountUniqueValues = (arr) => {
     let uniqueValuesCount = {};
     for (let i = 0; i < arr.length; i++) {
       if (arr.indexOf(arr[i]) === i) {
@@ -22,9 +22,10 @@ const valuesOfPropertiesByMty = {
       }
     };
     return uniqueValuesCount;
-  },
-  sortKeysByValue(obj) {
-    let sortedObj = {};
+  };
+
+  sortKeysByValue = (obj) => {
+    let sortedArr = [];
     while (Object.keys(obj).length !== 0) {
       let maxValue = 0
       for (let key in obj) {
@@ -33,26 +34,31 @@ const valuesOfPropertiesByMty = {
         }
       }
       let maxKey = Object.keys(obj).find(key => obj[key] === maxValue);
-      sortedObj[maxKey] = maxValue;
+      sortedArr.push(maxKey+' : '+maxValue);
       delete obj[maxKey];
     }
-    return sortedObj;
-  },
-  getPropertyValues(propertyName) {
-    let propertyValuesList = [];
-    for (let allElementStyles of this.getComputedStyles(this.listOfElements)) {
-      propertyValuesList.push(allElementStyles.getPropertyValue(propertyName));
-    }
-    propertyValuesList = this.removeWhiteSpaces(propertyValuesList);
-    propertyValuesList = this.findAndCountUniqueValues(propertyValuesList);
-    propertyValuesList = this.sortKeysByValue(propertyValuesList);
-    return propertyValuesList;
-  },
-  run() {
-    for (let propertyName of this.propertiesToSearch) {
-      this[propertyName] = this.getPropertyValues(propertyName);
-    }
-  }
-}
+    return sortedArr;
+  };
 
-valuesOfPropertiesByMty.run();
+  getPropertyValues = (propertyName) => {
+    let allElements = document.querySelectorAll('*');
+    let propertyValues = [];
+    for (let allElementStyles of getComputedStyles(allElements)) {
+      propertyValues.push(allElementStyles.getPropertyValue(propertyName));
+    }
+    propertyValues = removeWhiteSpaces(propertyValues);
+    propertyValues = findAndCountUniqueValues(propertyValues);
+    propertyValues = sortKeysByValue(propertyValues);
+    return propertyValues;
+  };
+
+  run = () => {
+    let styles = {};
+    for (let propertyName of propertiesToSearch) {
+      styles[propertyName] = getPropertyValues(propertyName);
+    }
+    return styles;
+  };
+
+  return run();
+})(['font-size','color', 'font-family']);
