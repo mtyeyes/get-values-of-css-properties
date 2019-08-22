@@ -1,4 +1,4 @@
-let valuesOfProperties = ( function(propertiesToSearch) {
+( function(propertiesToSearch) {
   getComputedStyles = (arr) => {
     let computedStyles = [];
     for (let element of arr) {
@@ -53,11 +53,24 @@ let valuesOfProperties = ( function(propertiesToSearch) {
   };
 
   run = () => {
-    let styles = {};
-    for (let propertyName of propertiesToSearch) {
-      styles[propertyName] = getPropertyValues(propertyName);
+    let result = {};
+    switch (typeof propertiesToSearch) {
+      case 'string':
+          result = getPropertyValues(propertiesToSearch);
+        break;
+      case 'object':
+        if (Array.isArray(propertiesToSearch)) {
+          for (let propertyName of propertiesToSearch) {
+            result[propertyName] = getPropertyValues(propertyName);
+          }
+        } else {
+          result = 'invalid input';
+        };
+        break;
+      default:
+        result = 'invalid input';
     }
-    return styles;
+    return result;
   };
 
   return run();
