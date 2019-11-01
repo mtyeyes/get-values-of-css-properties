@@ -53,23 +53,14 @@
   };
 
   run = () => {
-    let result = {};
-    switch (typeof propertiesToSearch) {
-      case 'string':
-          result = getPropertyValues(propertiesToSearch);
-        break;
-      case 'object':
-        if (Array.isArray(propertiesToSearch)) {
-          for (let propertyName of propertiesToSearch) {
-            result[propertyName] = getPropertyValues(propertyName);
-          }
-        } else {
-          result = 'invalid input';
-        };
-        break;
-      default:
-        result = 'invalid input';
-    }
+    let result;
+    if (typeof propertiesToSearch === 'string') {
+      result = getPropertyValues(propertiesToSearch);
+    } else if (Array.isArray(propertiesToSearch)) {
+      propertiesToSearch.forEach(property => result[property] = getPropertyValues(property))
+    } else {
+      result = 'invalid input';
+    };
     return result;
   };
 
