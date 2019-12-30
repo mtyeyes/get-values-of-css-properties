@@ -57,7 +57,8 @@
     if (typeof propertiesToSearch === 'string') {
       result = getPropertyValues(propertiesToSearch);
     } else if (Array.isArray(propertiesToSearch)) {
-      propertiesToSearch.forEach(property => result[property] = getPropertyValues(property))
+      result = {};
+      propertiesToSearch.forEach(property => result[property] = getPropertyValues(property));
     } else {
       result = 'invalid input';
     };
